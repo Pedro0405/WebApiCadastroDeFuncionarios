@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiCadatroDeFuncionarios.Data;
+using WebApiCadatroDeFuncionarios.Services.Funciomarios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Contexto>(options => options.UseMySql("Server=localhost;Port=3306;Database=FuncionariosDb;User=root;Password=123456;"
 , Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.34-mysql")));
+builder.Services.AddScoped<IfuncionarioServices, FuncionariosServices>();
+
 
 var app = builder.Build();
 

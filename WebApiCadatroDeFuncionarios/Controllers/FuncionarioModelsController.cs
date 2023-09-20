@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCadatroDeFuncionarios.Data;
 using WebApiCadatroDeFuncionarios.Models;
+using WebApiCadatroDeFuncionarios.Services.Funciomarios;
 
 namespace WebApiCadatroDeFuncionarios.Controllers
 {
@@ -15,110 +16,54 @@ namespace WebApiCadatroDeFuncionarios.Controllers
     public class FuncionarioModelsController : ControllerBase
     {
         private readonly Contexto _context;
-
-        public FuncionarioModelsController(Contexto context)
+        private readonly IfuncionarioServices _ifuncionarioServices;
+        public FuncionarioModelsController(Contexto context, IfuncionarioServices ifuncionarioServices)
         {
             _context = context;
+            _ifuncionarioServices = ifuncionarioServices;
         }
 
         // GET: api/FuncionarioModels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FuncionarioModel>>> Getfuncionarios()
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> Getfuncionarios()
         {
-          if (_context.funcionarios == null)
-          {
-              return NotFound();
-          }
-            return await _context.funcionarios.ToListAsync();
+            return Ok(await _ifuncionarioServices.GetFuncioario());
+
         }
 
         // GET: api/FuncionarioModels/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<FuncionarioModel>> GetFuncionarioModel(int id)
+        public async Task<ActionResult<ServiceResponse<FuncionarioModel>>> GetFuncionarioModel(int id)
         {
-          if (_context.funcionarios == null)
-          {
-              return NotFound();
-          }
-            var funcionarioModel = await _context.funcionarios.FindAsync(id);
-
-            if (funcionarioModel == null)
-            {
-                return NotFound();
-            }
-
-            return funcionarioModel;
+            ServiceResponse<FuncionarioModel> serviceResponse = await _ifuncionarioServices.GetFuncionarioByID(id);
+            return Ok(serviceResponse);
         }
 
         // PUT: api/FuncionarioModels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFuncionarioModel(int id, FuncionarioModel funcionarioModel)
+        [HttpPut]
+        public async Task<IActionResult> PutFuncionarioModel(FuncionarioModel funcionarioModel)
         {
-            if (id != funcionarioModel.id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(funcionarioModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FuncionarioModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = await _ifuncionarioServices.UpdateFuncioario(funcionarioModel);
+            return Ok(serviceResponse);
         }
 
         // POST: api/FuncionarioModels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FuncionarioModel>> PostFuncionarioModel(FuncionarioModel funcionarioModel)
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> CreateFuncioario(FuncionarioModel funcionarioModel)
         {
-          if (_context.funcionarios == null)
-          {
-              return Problem("Entity set 'Contexto.funcionarios'  is null.");
-          }
-            _context.funcionarios.Add(funcionarioModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFuncionarioModel", new { id = funcionarioModel.id }, funcionarioModel);
+        ServiceResponse<List<FuncionarioModel>> serviceResponse = await _ifuncionarioServices.CreateFuncioario(funcionarioModel);
+            return Ok(serviceResponse);    
         }
 
         // DELETE: api/FuncionarioModels/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFuncionarioModel(int id)
         {
-            if (_context.funcionarios == null)
-            {
-                return NotFound();
-            }
-            var funcionarioModel = await _context.funcionarios.FindAsync(id);
-            if (funcionarioModel == null)
-            {
-                return NotFound();
-            }
 
-            _context.funcionarios.Remove(funcionarioModel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool FuncionarioModelExists(int id)
-        {
-            return (_context.funcionarios?.Any(e => e.id == id)).GetValueOrDefault();
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = await _ifuncionarioServices.DeleteFuncioarioById(id);
+            return Ok(serviceResponse);
         }
     }
 }
