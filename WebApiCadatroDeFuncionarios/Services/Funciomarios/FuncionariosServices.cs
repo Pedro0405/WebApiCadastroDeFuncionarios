@@ -133,8 +133,41 @@ namespace WebApiCadatroDeFuncionarios.Services.Funciomarios
             }
             return serviceResponse;
         }
+        public async Task<ServiceResponse<List<FuncionarioModel>>> InativaFuncionario(int id)
+        {
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>();
 
-     
+            try
+            {
+                FuncionarioModel funcionario = _contexto.funcionarios.FirstOrDefault(x => x.id == id);
+
+                if (funcionario == null)
+                {
+                    serviceResponse.Dados = null;
+                    serviceResponse.menssagem = "Usuário não localizado!";
+                    serviceResponse.sucesso = false;
+                }
+
+                funcionario.ativo = false;
+                funcionario.UltimaAtualização = DateTime.Now.ToLocalTime();
+
+                _contexto.funcionarios.Update(funcionario);
+                await _contexto.SaveChangesAsync();
+
+                serviceResponse.Dados = _contexto.funcionarios.ToList();
+
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.menssagem = ex.Message;
+                serviceResponse.sucesso = false;
+            }
+
+            return serviceResponse;
+        }
+
+
     }
 }
 

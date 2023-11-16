@@ -9,6 +9,6 @@ namespace WebApiCadatroDeFuncionarios.Services.Funciomarios
         Task<ServiceResponse<FuncionarioModel>> GetFuncionarioByID(int id);
         Task<ServiceResponse<List<FuncionarioModel>>> UpdateFuncioario(FuncionarioModel funcionario);
         Task<ServiceResponse<List<FuncionarioModel>>> DeleteFuncioarioById(int id);
-
+        Task<ServiceResponse<List<FuncionarioModel>>> InativaFuncionario(int id);
     }
 }

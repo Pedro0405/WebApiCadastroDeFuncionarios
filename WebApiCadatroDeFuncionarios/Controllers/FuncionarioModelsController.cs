@@ -56,7 +56,14 @@ namespace WebApiCadatroDeFuncionarios.Controllers
         ServiceResponse<List<FuncionarioModel>> serviceResponse = await _ifuncionarioServices.CreateFuncioario(funcionarioModel);
             return Ok(serviceResponse);    
         }
+        [HttpPut("inativaFuncionario")]
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> InativaFuncionario(int id)
+        {
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = await _ifuncionarioServices.InativaFuncionario(id);
 
+            return Ok(serviceResponse);
+
+        }
         // DELETE: api/FuncionarioModels/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFuncionarioModel(int id)
