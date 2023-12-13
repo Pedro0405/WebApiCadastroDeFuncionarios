@@ -146,10 +146,14 @@ namespace WebApiCadatroDeFuncionarios.Services.Funciomarios
                     serviceResponse.Dados = null;
                     serviceResponse.menssagem = "Usuário não localizado!";
                     serviceResponse.sucesso = false;
+                    return serviceResponse;
                 }
 
                 funcionario.ativo = false;
                 funcionario.UltimaAtualização = DateTime.Now.ToLocalTime();
+
+                // Resto do código...
+
 
                 _contexto.funcionarios.Update(funcionario);
                 await _contexto.SaveChangesAsync();

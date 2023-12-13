@@ -13,7 +13,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Contexto>(options => options.UseMySql("Server=localhost;Port=3306;Database=FuncionariosDb;User=root;Password=123456;"
 , Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.34-mysql")));
 builder.Services.AddScoped<IfuncionarioServices, FuncionariosServices>();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("funcionariosApp", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -23,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("funcionariosApp");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
