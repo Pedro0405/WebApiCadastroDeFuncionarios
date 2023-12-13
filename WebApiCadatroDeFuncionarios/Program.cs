@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<Contexto>(options => options.UseMySql("Server=localhost;Port=3306;Database=FuncionariosDb;User=root;Password=123456;"
+builder.Services.AddDbContext<Contexto>(options => options.UseMySql("Server=bd.iron.hostazul.com.br;Port=4406;Database=176_funcionariosdb;User=176_pedro.0405;Password=xqsa1kbenptrvduoymih;"
 , Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.34-mysql")));
 builder.Services.AddScoped<IfuncionarioServices, FuncionariosServices>();
 builder.Services.AddCors(options =>

@@ -8,6 +8,7 @@ namespace WebApiCadatroDeFuncionarios.Data
         public Contexto(DbContextOptions<Contexto> options)
         : base(options)
         {
+            Database.EnsureCreated();
         }
 
         // Adicione DbSet para cada entidade do seu banco de dados aqui
